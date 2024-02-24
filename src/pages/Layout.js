@@ -2,7 +2,7 @@ import { Outlet, Link } from "react-router-dom";
 
 export default function Layout() {
   return (
-    <div className="h-screen w-screen bg-slate-400">
+    <div className="h-screen w-screen bg-black text-white">
       <div>
         <Link to={"/"}>Discover</Link>
         <Link to={"/feed"}>Feed</Link>
