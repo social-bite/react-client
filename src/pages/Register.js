@@ -1,22 +1,35 @@
+import React from 'react'
 import { useState } from 'react';
 import { API_URL } from '../utils/utils';
+import { useNavigate } from 'react-router-dom';
 
-export default function Signup() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
+function Signup() {
+  const navigate = useNavigate();
+  const [login, setLogin] = useState({
+    username: '',
+    password: '',
+    passwordConfirm: '',
+  });
 
-  let minLength = 8;
-  let maxLength = 72
+  function handleNotification(notification) {
+    let parent = document.getElementById('parent_notification');
+    parent.innerHTML = '';
+    parent.innerHTML += notification;
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
-    if (password !== passwordConfirm) {
-        alert("Passwords do not match.");
-        return;
+    const { username, password, passwordConfirm } = login;
+    if (!username || !password || !passwordConfirm) {
+      handleNotification("Must enter all fields");
+      return;
     }
-    if (password.length < minLength || password.length > maxLength) {
-      alert("Password must be over 8 characters and less than 72 characters");
+    if (password !== passwordConfirm) {
+      handleNotification("Passwords do not match.");
+      return;
+    }
+    if (password.length < 8 || password.length > 72) {
+      handleNotification("Password must be over 8 characters and less than 72 characters");
       return;
     }
     try {
@@ -27,27 +40,29 @@ export default function Signup() {
         },
         body: JSON.stringify({ username, password, passwordConfirm })
       });
-      console.log(response);
-
+      const data = await response.json();
       if (response.ok) {
-        // TODO: Navigate to /feed
-        // navigate('/feed')
-        
+        navigate('/feed');
       } 
       else {
-        alert('Failed to register account. Please try again.');
+        if (data["error"] !== undefined) {
+          // key exists, print error 
+          const jsonObject = JSON.parse(data["error"])
+          console.log(jsonObject)
+          handleNotification(jsonObject["data"]["username"]["message"]);
+        }
       }
     } catch (error) {
       console.error('Error registering account:', error);
-      alert('An error occurred. Please try again later.');
+      handleNotification("An error occurred. Please try again later.");
     }
   }
-
 
   return (
     <section>
       <div>
-        <h1 className="pb-4">Signup</h1>
+        <h1 className="pb-4">Register</h1>
+        <div id='parent_notification'></div>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col w-6/12">
             <label htmlFor="username">Username</label>
@@ -55,8 +70,8 @@ export default function Signup() {
               className="border-solid border-2 border-[black]"
               type="text"
               name="username"
-              value={username}
-              onChange={e => setUsername(e.target.value)}
+              value={login.username}
+              onChange={e => setLogin({...login, username: (e.target.value)})}
             />
           </div>
           <div className="flex flex-col w-6/12">
@@ -65,8 +80,8 @@ export default function Signup() {
               className="border-solid border-2 border-[black]"
               type="text"
               name="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
+              value={login.password}
+              onChange={e => setLogin({...login, password: (e.target.value)})}
             />
           </div>
           <div className="flex flex-col w-6/12">
@@ -75,8 +90,8 @@ export default function Signup() {
               className="border-solid border-2 border-[black]"
               type="text"
               name="passwordConfirm"
-              value={passwordConfirm}
-              onChange={e => setPasswordConfirm(e.target.value)}
+              value={login.passwordConfirm}
+              onChange={e => setLogin({...login, passwordConfirm: (e.target.value)})}
             />
           </div>
           <button
@@ -90,3 +105,5 @@ export default function Signup() {
     </section>
   );
 }
+
+export default Signup
