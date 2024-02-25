@@ -6,4 +6,13 @@
   .btn-teal {
     @apply bg-teal-1 hover:bg-teal-2 px-2 py-1 rounded-md;
   }
+  .link-orange {
+    @apply text-orange-1 hover:text-orange-2 underline;
+  }
+
+  .input-minimal {
+    @apply w-full bg-black text-white outline-none 
+    border-t-0 border-b-2 border-x-0 mb-4 transition-all duration-200 ease-linear
+     hover:border-teal-1 focus:border-teal-1;
+  }
 }
