@@ -12,7 +12,7 @@ export default function Discover() {
     });
   }, []);
   return (
-    <div className="flex flex-col overflow-y-scroll gap-y-4">
+    <div className="">
       {restaurants.map((restaurant) => {
         return <Restaurant key={restaurant.id} {...restaurant} />;
       })}
