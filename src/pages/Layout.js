@@ -12,12 +12,15 @@ export default function Layout() {
     <div className="h-screen w-screen flex flex-col bg-black text-white">
       <div>
         <Link to={"/"}>Discover</Link>
-        <Link to={"/feed"}>Feed</Link>
-        <Link to={"/account"}>Account</Link>
+
         {pb.authStore.isValid ? (
-          <button onClick={onLogout} className="btn-teal">
-            Logout
-          </button>
+          <>
+            <Link to={"/feed"}>Feed</Link>
+            <Link to={"/account"}>Account</Link>
+            <button onClick={onLogout} className="btn-teal">
+              Logout
+            </button>
+          </>
         ) : (
           <>
             <Link to={"/login"}>Login</Link>

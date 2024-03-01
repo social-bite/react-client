@@ -18,7 +18,7 @@ export const fetchRestaurantList = async () => {
  * @param {string} id The id of the restaurant 
  * @returns 
  */
-export const fetchRestaurantMenu = async ({id}) => {
+export const fetchRestaurantMenu = async (id) => {
     const records = await pb.collection('menu_items').getFullList({
         filter: `restaurant_id="${id}"`
     });
