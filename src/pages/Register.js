@@ -41,27 +41,10 @@ function Signup() {
       return;
     }
     try {
-      // const response = await fetch(API_URL + "/api/accounts/register/", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ username, password, passwordConfirm }),
-      // });
-      // const data = await response.json();
       await register(username, password, passwordConfirm);
       await login(username, password);
       navigate("/feed");
-      // if (response.ok) {
-      //   navigate("/feed");
-      // } else {
-      //   // if (data["error"] !== undefined) {
-      //   //   // key exists, print error
-      //   //   const jsonObject = JSON.parse(data["error"]);
-      //   //   console.log(jsonObject);
-      //   //   handleNotification(jsonObject["data"]["username"]["message"]);
-      //   // }
-      // }
+
     } catch (error) {
       console.error("Error registering account:", error);
       handleNotification("An error occurred. Please try again later.");
