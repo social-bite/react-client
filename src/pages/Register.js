@@ -15,27 +15,19 @@ function Signup() {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  function handleNotification(notification) {
-    // let parent = document.getElementById("parent_notification");
-    // parent.innerHTML = "";
-    // parent.innerHTML += notification;
-    setErrorMessage(notification);
-
-  }
-
   async function handleSubmit(event) {
     event.preventDefault();
     const { username, password, passwordConfirm } = loginCredentials;
     if (!username || !password || !passwordConfirm) {
-      handleNotification("Must enter all fields");
+      setErrorMessage("Must enter all fields");
       return;
     }
     if (password !== passwordConfirm) {
-      handleNotification("Passwords do not match.");
+      setErrorMessage("Passwords do not match.");
       return;
     }
     if (password.length < 8 || password.length > 72) {
-      handleNotification(
+      setErrorMessage(
         "Password must be over 8 characters and less than 72 characters"
       );
       return;
@@ -47,7 +39,7 @@ function Signup() {
 
     } catch (error) {
       console.error("Error registering account:", error);
-      handleNotification("An error occurred. Please try again later.");
+      setErrorMessage("An error occurred. Please try again later.");
     }
   }
 

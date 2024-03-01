@@ -14,19 +14,12 @@ function Login() {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  function handleNotification(notification) {
-    // let parent = document.getElementById("parent_notification");
-    // parent.innerHTML = "";
-    // parent.innerHTML += notification;
-    setErrorMessage(notification);
-  }
-
   async function handleSubmit(event) {
     event.preventDefault();
     const { password } = loginCredentials;
     const { username } = loginCredentials;
     if (!username || !password) {
-      handleNotification("Please enter username or password");
+      setErrorMessage("Please enter username or password");
       return;
     }
     try {
@@ -34,7 +27,7 @@ function Login() {
       navigate("/feed");
     } catch (error) {
       console.error("Server error", error);
-      handleNotification("Server error");
+      setErrorMessage("Server error");
     }
   }
 
