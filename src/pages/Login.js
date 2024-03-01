@@ -1,12 +1,13 @@
 import React from "react";
 import { useState } from "react";
-import { API_URL } from "../utils/utils";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/socialbite.svg";
 
-function Login() {
+import { login } from "lib/api";
+
+export default function Login() {
   const navigate = useNavigate();
-  const [login, setLogin] = useState({
+  const [loginCredentials, setLoginCredentials] = useState({
     username: "",
     password: "",
   });
@@ -15,27 +16,15 @@ function Login() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const { password } = login;
-    const { username } = login;
+    const { password } = loginCredentials;
+    const { username } = loginCredentials;
     if (!username || !password) {
       setErrorMessage("Please enter username or password");
       return;
     }
     try {
-      const response = await fetch(API_URL + "/api/accounts/login/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
-      const data = await response.json();
-      console.log(data);
-      if (response.ok) {
-        navigate("/feed");
-      } else {
-        setErrorMessage(data["message"]);
-      }
+      await login(username, password);
+      navigate("/feed");
     } catch (error) {
       console.error("Server error", error);
       setErrorMessage("Server error");
@@ -54,7 +43,7 @@ function Login() {
             name="Username"
             value={login.username}
             placeholder="Username"
-            onChange={(e) => setLogin({ ...login, username: e.target.value })}
+            onChange={(e) => setLoginCredentials({ ...loginCredentials, username: e.target.value })}
           />
         </div>
         <div className="flex flex-col">
@@ -64,7 +53,7 @@ function Login() {
             name="password"
             value={login.password}
             placeholder="Password"
-            onChange={(e) => setLogin({ ...login, password: e.target.value })}
+            onChange={(e) => setLoginCredentials({ ...loginCredentials, password: e.target.value })}
           />
         </div>
         <button className="btn-teal" type="submit">
@@ -81,4 +70,3 @@ function Login() {
   );
 }
 
-export default Login;

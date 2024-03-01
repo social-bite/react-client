@@ -1,12 +1,13 @@
 import React from "react";
 import { useState } from "react";
-import { API_URL } from "../utils/utils";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/socialbite.svg";
 
-function Signup() {
+import { login, register } from "lib/api";
+
+export default function Register() {
   const navigate = useNavigate();
-  const [login, setLogin] = useState({
+  const [loginCredentials, setLoginCredentials] = useState({
     username: "",
     password: "",
     passwordConfirm: "",
@@ -16,7 +17,7 @@ function Signup() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const { username, password, passwordConfirm } = login;
+    const { username, password, passwordConfirm } = loginCredentials;
     if (!username || !password || !passwordConfirm) {
       setErrorMessage("Must enter all fields");
       return;
@@ -32,24 +33,10 @@ function Signup() {
       return;
     }
     try {
-      const response = await fetch(API_URL + "/api/accounts/register/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password, passwordConfirm }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        navigate("/feed");
-      } else {
-        if (data["error"] !== undefined) {
-          // key exists, print error
-          const jsonObject = JSON.parse(data["error"]);
-          console.log(jsonObject);
-          setErrorMessage(jsonObject["data"]["username"]["message"]);
-        }
-      }
+      await register(username, password, passwordConfirm);
+      await login(username, password);
+      navigate("/feed");
+
     } catch (error) {
       console.error("Error registering account:", error);
       setErrorMessage("An error occurred. Please try again later.");
@@ -67,8 +54,8 @@ function Signup() {
             type="text"
             name="username"
             placeholder="Username"
-            value={login.username}
-            onChange={(e) => setLogin({ ...login, username: e.target.value })}
+            value={loginCredentials.username}
+            onChange={(e) => setLoginCredentials({ ...loginCredentials, username: e.target.value })}
           />
         </div>
         <div className="flex flex-col">
@@ -77,8 +64,8 @@ function Signup() {
             type="text"
             name="password"
             placeholder="Password"
-            value={login.password}
-            onChange={(e) => setLogin({ ...login, password: e.target.value })}
+            value={loginCredentials.password}
+            onChange={(e) => setLoginCredentials({ ...loginCredentials, password: e.target.value })}
           />
         </div>
         <div className="flex flex-col">
@@ -87,9 +74,9 @@ function Signup() {
             type="text"
             name="passwordConfirm"
             placeholder="Confirm Password"
-            value={login.passwordConfirm}
+            value={loginCredentials.passwordConfirm}
             onChange={(e) =>
-              setLogin({ ...login, passwordConfirm: e.target.value })
+              setLoginCredentials({ ...loginCredentials, passwordConfirm: e.target.value })
             }
           />
         </div>
@@ -100,11 +87,9 @@ function Signup() {
       <div className="flex">
         Already have an account?
         <a className="ml-1 link-orange" href="/login">
-          Login
+          Login!
         </a>
       </div>
     </section>
   );
 }
-
-export default Signup;
