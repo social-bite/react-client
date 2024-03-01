@@ -5,6 +5,6 @@ export default function RequireAuth() {
   return pb.authStore.isValid ? (
     <Outlet />
   ) : (
-    <Navigate to="/login" replace={true} />
+    <Navigate to="/login" replace />
   );
 }

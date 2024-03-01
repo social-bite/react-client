@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Logo from "../assets/socialbite.svg";
+import { Link, useNavigate } from "react-router-dom";
+import { ReactComponent as Logo } from "assets/socialbite.svg";
 
 import { login } from "lib/api";
 
@@ -33,7 +33,7 @@ export default function Login() {
 
   return (
     <section className="h-screen w-screen flex flex-col justify-center items-center bg-black text-white">
-      <img src={Logo} alt="SocialBite Logo" className="pb-4" />
+      <Logo />
       <div id="parent_notification">{errorMessage ? errorMessage : ""}</div>
       <form className="mb-4 w-1/2" onSubmit={(event) => handleSubmit(event)}>
         <div className="flex flex-col">
@@ -43,7 +43,12 @@ export default function Login() {
             name="Username"
             value={login.username}
             placeholder="Username"
-            onChange={(e) => setLoginCredentials({ ...loginCredentials, username: e.target.value })}
+            onChange={(e) =>
+              setLoginCredentials({
+                ...loginCredentials,
+                username: e.target.value,
+              })
+            }
           />
         </div>
         <div className="flex flex-col">
@@ -53,7 +58,12 @@ export default function Login() {
             name="password"
             value={login.password}
             placeholder="Password"
-            onChange={(e) => setLoginCredentials({ ...loginCredentials, password: e.target.value })}
+            onChange={(e) =>
+              setLoginCredentials({
+                ...loginCredentials,
+                password: e.target.value,
+              })
+            }
           />
         </div>
         <button className="btn-teal" type="submit">
@@ -62,11 +72,10 @@ export default function Login() {
       </form>
       <div className="flex">
         Don't have an account?
-        <a className="ml-1 link-orange" href="/register">
+        <Link className="ml-1 link-orange" to="/register" replace>
           Register!
-        </a>
+        </Link>
       </div>
     </section>
   );
 }
-

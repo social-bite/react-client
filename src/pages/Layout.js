@@ -7,6 +7,7 @@ import { ReactComponent as SearchIcon } from "assets/search.svg";
 import { ReactComponent as AccountIcon } from "assets/account.svg";
 import { ReactComponent as LogoutIcon } from "assets/logout.svg";
 import { ReactComponent as LoginIcon } from "assets/login.svg";
+import { ReactComponent as LogoIcon } from "assets/socialbite_horizontal.svg";
 
 export default function Layout() {
   function onLogout() {
@@ -15,6 +16,11 @@ export default function Layout() {
   }
   return (
     <div className="h-screen w-screen flex flex-col bg-black text-white">
+      <div className="flex justify-center">
+        <div className="max-w-lg w-full">
+          <LogoIcon />
+        </div>
+      </div>
       <div className="flex justify-center grow overflow-y-scroll">
         <div className="max-w-lg w-full">
           <Outlet />

@@ -17,9 +17,9 @@ export default function Restaurant({
   const openMenuDialog = async () => {
     setIsOpen(true);
     if (menu.length > 0) return;
-    fetchRestaurantMenu(id).then((r)=>{
+    fetchRestaurantMenu(id).then((r) => {
       setMenu(r);
-    })
+    });
   };
 
   return (

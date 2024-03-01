@@ -1,7 +1,8 @@
 import React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Logo from "../assets/socialbite.svg";
+import { Link, useNavigate } from "react-router-dom";
+
+import {ReactComponent as Logo} from "assets/socialbite.svg";
 
 import { login, register } from "lib/api";
 
@@ -36,7 +37,6 @@ export default function Register() {
       await register(username, password, passwordConfirm);
       await login(username, password);
       navigate("/feed");
-
     } catch (error) {
       console.error("Error registering account:", error);
       setErrorMessage("An error occurred. Please try again later.");
@@ -45,7 +45,8 @@ export default function Register() {
 
   return (
     <section className="h-screen w-screen flex flex-col justify-center items-center bg-black text-white">
-      <img src={Logo} alt="SocialBite Logo" className="pb-4" />
+      <Logo />
+      {/* <img src={Logo} alt="SocialBite Logo" className="pb-4" /> */}
       <div id="parent_notification">{errorMessage ? errorMessage : ""}</div>
       <form className="mb-4 w-1/2" onSubmit={handleSubmit}>
         <div className="flex flex-col">
@@ -55,7 +56,12 @@ export default function Register() {
             name="username"
             placeholder="Username"
             value={loginCredentials.username}
-            onChange={(e) => setLoginCredentials({ ...loginCredentials, username: e.target.value })}
+            onChange={(e) =>
+              setLoginCredentials({
+                ...loginCredentials,
+                username: e.target.value,
+              })
+            }
           />
         </div>
         <div className="flex flex-col">
@@ -65,7 +71,12 @@ export default function Register() {
             name="password"
             placeholder="Password"
             value={loginCredentials.password}
-            onChange={(e) => setLoginCredentials({ ...loginCredentials, password: e.target.value })}
+            onChange={(e) =>
+              setLoginCredentials({
+                ...loginCredentials,
+                password: e.target.value,
+              })
+            }
           />
         </div>
         <div className="flex flex-col">
@@ -76,7 +87,10 @@ export default function Register() {
             placeholder="Confirm Password"
             value={loginCredentials.passwordConfirm}
             onChange={(e) =>
-              setLoginCredentials({ ...loginCredentials, passwordConfirm: e.target.value })
+              setLoginCredentials({
+                ...loginCredentials,
+                passwordConfirm: e.target.value,
+              })
             }
           />
         </div>
@@ -86,9 +100,9 @@ export default function Register() {
       </form>
       <div className="flex">
         Already have an account?
-        <a className="ml-1 link-orange" href="/login">
+        <Link className="ml-1 link-orange" to="/login" replace>
           Login!
-        </a>
+        </Link>
       </div>
     </section>
   );
