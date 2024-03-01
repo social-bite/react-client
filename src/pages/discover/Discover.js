@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { API_URL } from "../../utils/utils";
+import { fetchRestaurantList } from "lib/api";
 import Restaurant from "./Restaurant";
 
 export default function Discover() {
@@ -7,18 +7,9 @@ export default function Discover() {
 
   // On mount, fetch the restaurant information
   useEffect(() => {
-    const fetchRestaurants = async () => {
-      const response = await fetch(API_URL + "/api/discover/restaurants/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
-      console.log(data);
-      return data;
-    };
-    fetchRestaurants().then((data) => setRestaurants(data.restaurantData));
+    fetchRestaurantList().then((r)=>{
+      setRestaurants(r);
+    });
   }, []);
   return (
     <div className="flex flex-col overflow-y-scroll gap-y-4">

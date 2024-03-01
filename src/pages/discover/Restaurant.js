@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Dialog } from "@headlessui/react";
-import { API_URL } from "../../utils/utils";
+import { fetchRestaurantMenu } from "lib/api";
 
 export default function Restaurant({
   id,
@@ -17,17 +17,9 @@ export default function Restaurant({
   const openMenuDialog = async () => {
     setIsOpen(true);
     if (menu.length > 0) return;
-    const response = await fetch(
-      `${API_URL}/api/discover/restaurant/${id}/menu`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const data = await response.json();
-    setMenu(data.menuData);
+    fetchRestaurantMenu({id:id}).then((r)=>{
+      setMenu(r);
+    })
   };
 
   return (
