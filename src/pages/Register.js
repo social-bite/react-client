@@ -5,7 +5,7 @@ import Logo from "../assets/socialbite.svg";
 
 import { login, register } from "lib/api";
 
-function Signup() {
+export default function Register() {
   const navigate = useNavigate();
   const [loginCredentials, setLoginCredentials] = useState({
     username: "",
@@ -86,12 +86,10 @@ function Signup() {
       </form>
       <div className="flex">
         Already have an account?
-        <a className="ml-1 link-orange" href="/loginCredentials">
-          loginCredentials
+        <a className="ml-1 link-orange" href="/login">
+          Login!
         </a>
       </div>
     </section>
   );
 }
-
-export default Signup;

@@ -1,16 +1,9 @@
-import { useEffect, useState } from "react";
-import { fetchRestaurantList } from "lib/api";
+import { useLoaderData } from "react-router";
 import Restaurant from "./Restaurant";
 
 export default function Discover() {
-  const [restaurants, setRestaurants] = useState([]);
-
-  // On mount, fetch the restaurant information
-  useEffect(() => {
-    fetchRestaurantList().then((r)=>{
-      setRestaurants(r);
-    });
-  }, []);
+  const restaurants  = useLoaderData();
+  
   return (
     <div className="">
       {restaurants.map((restaurant) => {

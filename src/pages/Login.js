@@ -5,7 +5,7 @@ import Logo from "../assets/socialbite.svg";
 
 import { login } from "lib/api";
 
-function Login() {
+export default function Login() {
   const navigate = useNavigate();
   const [loginCredentials, setLoginCredentials] = useState({
     username: "",
@@ -70,4 +70,3 @@ function Login() {
   );
 }
 
-export default Login;
