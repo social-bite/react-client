@@ -46,7 +46,6 @@ export default function Register() {
   return (
     <section className="h-screen w-screen flex flex-col justify-center items-center bg-black text-white">
       <Logo />
-      {/* <img src={Logo} alt="SocialBite Logo" className="pb-4" /> */}
       <div id="parent_notification">{errorMessage ? errorMessage : ""}</div>
       <form className="mb-4 w-1/2" onSubmit={handleSubmit}>
         <div className="flex flex-col">
