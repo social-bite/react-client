@@ -6,6 +6,9 @@
   .btn-teal {
     @apply bg-teal-1 hover:bg-teal-2 px-2 py-1 rounded-md;
   }
+  .btn-orange {
+    @apply bg-orange-1 hover:bg-orange-2 px-2 py-1 rounded-md;
+  }
   .link-orange {
     @apply text-orange-1 hover:text-orange-2 underline;
   }

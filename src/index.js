@@ -17,7 +17,7 @@ import Register from "pages/register/Register";
 import Account from "pages/account/Account";
 import RequireAuth from "pages/RequireAuth";
 import NoAuth from "pages/NoAuth";
-import { fetchRestaurantList } from "lib/api";
+import { fetchFeed, fetchRestaurantList } from "lib/api";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,7 +30,7 @@ const router = createBrowserRouter(
       {/* User is required to be logged in */}
       <Route element={<RequireAuth />}>
         <Route element={<Layout />}>
-          <Route path="feed" element={<Feed />} />
+          <Route path="feed" loader={fetchFeed} element={<Feed />} />
           <Route path="account" element={<Account />} />
         </Route>
       </Route>
