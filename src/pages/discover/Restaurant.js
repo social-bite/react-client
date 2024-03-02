@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { fetchRestaurantMenu } from "lib/api";
+import useSWR from "swr";
 
 export default function Restaurant({
   id,
@@ -12,14 +13,14 @@ export default function Restaurant({
   max_price,
 }) {
   let [isOpen, setIsOpen] = useState(false);
-  const [menu, setMenu] = useState([]);
+  const {
+    data: menu,
+    error,
+    isLoading,
+  } = useSWR(isOpen ? `fetchMenu/${id}` : null, () => fetchRestaurantMenu(id));
 
   const openMenuDialog = async () => {
     setIsOpen(true);
-    if (menu.length > 0) return;
-    fetchRestaurantMenu(id).then((r) => {
-      setMenu(r);
-    });
   };
 
   return (
@@ -46,7 +47,7 @@ export default function Restaurant({
         <div className="fixed inset-0 flex w-screen items-center justify-center bg-black bg-opacity-70">
           <Dialog.Panel className="bg-black text-white p-5 mx-5 rounded max-h-96 max-w-lg border-teal-2 border-2 overflow-y-scroll">
             <Dialog.Title>{name}</Dialog.Title>
-            {menu.map((item) => {
+            {menu?.map((item) => {
               return (
                 <div key={item.id}>
                   ${item.price} - {item.name}

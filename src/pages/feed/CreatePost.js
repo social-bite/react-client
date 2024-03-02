@@ -5,6 +5,7 @@ export default function CreatePost() {
   const [postData, setPostData] = useState({
     description: "",
   });
+
   return (
     <div>
       <input
@@ -19,7 +20,9 @@ export default function CreatePost() {
           })
         }
       />
-      <button className="btn-orange" onClick={createPost}>Upload</button>
+      <button className="btn-orange" onClick={createPost}>
+        Upload
+      </button>
     </div>
   );
 }

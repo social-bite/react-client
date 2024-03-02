@@ -8,6 +8,7 @@ import {
   createRoutesFromElements,
   RouterProvider,
 } from "react-router-dom";
+import { SWRConfig } from "swr";
 
 import Layout from "pages/Layout";
 import Discover from "pages/discover/Discover";
@@ -17,20 +18,19 @@ import Register from "pages/register/Register";
 import Account from "pages/account/Account";
 import RequireAuth from "pages/RequireAuth";
 import NoAuth from "pages/NoAuth";
-import { fetchFeed, fetchRestaurantList } from "lib/api";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       {/* User can either be logged in or not logged in */}
       <Route element={<Layout />}>
-        <Route path="/" loader={fetchRestaurantList} element={<Discover />} />
+        <Route path="/" element={<Discover />} />
       </Route>
 
       {/* User is required to be logged in */}
       <Route element={<RequireAuth />}>
         <Route element={<Layout />}>
-          <Route path="feed" loader={fetchFeed} element={<Feed />} />
+          <Route path="feed" element={<Feed />} />
           <Route path="account" element={<Account />} />
         </Route>
       </Route>
@@ -43,10 +43,18 @@ const router = createBrowserRouter(
   )
 );
 
+const config = {
+  revalidateIfStale: false,
+  revalidateOnFocus: false,
+  revalidateOnReconnect: false
+}
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <SWRConfig value={config}>
+      <RouterProvider router={router} />
+    </SWRConfig>
   </React.StrictMode>
 );
 
