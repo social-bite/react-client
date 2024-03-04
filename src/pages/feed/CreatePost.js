@@ -35,7 +35,7 @@ export default function CreatePost() {
       >
         <Combobox.Input
           className="relative"
-          autocomplete="off"
+          autoComplete="off"
           onChange={(e) => setQuery(e.target.value)}
           displayValue={(restaurant) => restaurant.name}
         />
