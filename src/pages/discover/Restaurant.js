@@ -45,7 +45,7 @@ export default function Restaurant({
         onClose={() => setIsOpen(false)}
       >
         <div className="fixed inset-0 flex w-screen items-center justify-center bg-black bg-opacity-70">
-          <Dialog.Panel className="bg-black text-white p-5 mx-5 rounded max-h-96 max-w-lg border-teal-2 border-2 overflow-y-scroll">
+          <Dialog.Panel className="bg-black text-white p-5 mx-5 rounded max-h-96 max-w-2xl w-full border-teal-2 border-2 overflow-y-scroll">
             <Dialog.Title>{name}</Dialog.Title>
             {menu?.map((item) => {
               return (

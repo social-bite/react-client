@@ -18,4 +18,11 @@
     border-t-0 border-b-2 border-x-0 mb-4 transition-all duration-200 ease-linear
      hover:border-teal-1 focus:border-teal-1;
   }
+
+  .overlay-background{
+    @apply fixed inset-0 flex w-screen items-center justify-center bg-black bg-opacity-70;
+  }
+  .overlay-panel{
+    @apply bg-black text-white rounded border-teal-2 border-2 overflow-y-scroll;
+  }
 }
