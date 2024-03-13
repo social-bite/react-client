@@ -1,7 +1,7 @@
 {
   "name": "react-client",
   "version": "0.1.0",
-  "homepage": "https://social-bite.github.io/react-client/",
+  "homepage": "https://social-bite.github.io/react-client",
   "private": true,
   "dependencies": {
     "@headlessui/react": "^1.7.18",
