@@ -1,6 +1,7 @@
 import { Outlet, Link } from "react-router-dom";
 import pb from "lib/pocketbase";
 import { logout } from "lib/api";
+import { useNavigate } from "react-router-dom";
 
 import { ReactComponent as FeedIcon } from "assets/feed.svg";
 import { ReactComponent as SearchIcon } from "assets/search.svg";
@@ -10,12 +11,13 @@ import { ReactComponent as LoginIcon } from "assets/login.svg";
 import { ReactComponent as LogoIcon } from "assets/socialbite_horizontal.svg";
 
 export default function Layout() {
+  const navigate = useNavigate();
   function onLogout() {
     logout();
-    window.location.reload();
+    navigate("/");
   }
   return (
-    <div className="h-screen w-screen flex flex-col bg-black text-white">
+    <div className="h-screen w-screen flex flex-col bg-black text-white pt-2 pr-2 pl-2">
       <div className="flex justify-center">
         <div className="max-w-lg w-full">
           <LogoIcon />

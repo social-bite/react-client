@@ -1,11 +1,11 @@
+import { useLoaderData } from "react-router";
 import { Tab } from "@headlessui/react";
-import useSWR from "swr";
 import CreatePost from "./CreatePost";
 import Post from "./Post";
-import { fetchFeed } from "lib/api";
 
 export default function Feed() {
-  const { data: posts, error, isLoading } = useSWR("fetchFeed", fetchFeed);
+  const { posts } = useLoaderData();
+
   return (
     <Tab.Group>
       <Tab.List>
@@ -18,7 +18,7 @@ export default function Feed() {
         </Tab.Panel>
         <Tab.Panel>
           <div className="flex flex-col">
-            {posts?.map((post, i) => (
+            {posts.map((post, i) => (
               <Post key={i} {...post} />
             ))}
           </div>

@@ -66,7 +66,7 @@ export default function Login() {
             }
           />
         </div>
-        <button className="btn-teal" type="submit">
+        <button className="btn-teal w-full" type="submit">
           Login
         </button>
       </form>
