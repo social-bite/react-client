@@ -4,8 +4,8 @@ import CreatePost from "./CreatePost";
 import Post from "./Post";
 
 export default function Feed() {
-  const posts = useLoaderData();
-  console.log(posts);
+  const { posts } = useLoaderData();
+
   return (
     <Tab.Group>
       <Tab.List>

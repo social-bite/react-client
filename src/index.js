@@ -17,7 +17,14 @@ import Register from "pages/register/Register";
 import Account from "pages/account/Account";
 import RequireAuth from "pages/RequireAuth";
 import NoAuth from "pages/NoAuth";
-import { fetchFeed, fetchRestaurantList } from "lib/api";
+import { fetchFeed, fetchRestaurantList, fetchUser } from "lib/api";
+
+const account_loader = async () => {
+  const [userData, feedData] = await Promise.all([
+    fetchUser(), fetchFeed()
+  ])
+  return {...userData, ...feedData};
+}
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,7 +38,7 @@ const router = createBrowserRouter(
       <Route element={<RequireAuth />}>
         <Route element={<Layout />}>
           <Route path="feed" loader={fetchFeed} element={<Feed />} />
-          <Route path="account" element={<Account />} />
+          <Route path="account" loader={account_loader} element={<Account />} />
         </Route>
       </Route>
       {/* User is required to be not logged in */}
