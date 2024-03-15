@@ -45,7 +45,7 @@ export const fetchRestaurantMenu = async (id) => {
 };
 
 export const fetchFeed = async () => {
-  const records = await pb.collection("posts").getFullList()
+  const records = await pb.collection("posts").getFullList({ requestKey: null })
   return records;
 }
 
@@ -71,4 +71,11 @@ export const createPost = async ({restaurant_id, menu_item_id, description, pric
   };
   console.log(data);
   await pb.collection('posts').create(data)
+}
+
+export const fetchUser = async () => {
+  const userData = await pb.collection('users').getFullList({ requestKey: null });
+  const { avatar } = userData[0];
+  const url = pb.files.getUrl(userData[0], avatar);
+  return [userData[0], url];
 }
