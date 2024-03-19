@@ -3,7 +3,7 @@ import { useLoaderData } from "react-router";
 // import Logo from "assets/selfie.jpg";
 
 function Account() {
-  const {avatar, email, firstname, lastname, posts, url, username} = useLoaderData();
+  const {avatar, posts, username} = useLoaderData();
 
   return (
     <div>
@@ -22,7 +22,7 @@ function Account() {
       { posts ? (
           <div className="grid grid-cols-3 gap-4 pt-8">
             { posts.map((ele, index) => {
-              return (<img className="flex justify-center items-center" key={index} src={ele["image"]}></img>)
+              return (<img className="flex justify-center items-center" alt="post_img" key={index} src={ele["image"]}></img>)
             })}
           </div>
         ) : (
