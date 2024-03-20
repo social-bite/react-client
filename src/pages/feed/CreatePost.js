@@ -11,10 +11,15 @@ export default function CreatePost() {
     isLoading,
   } = useSWR("fetchRestaurantList", fetchRestaurantList);
 
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+
+
   const [postData, setPostData] = useState({
     restaurant: "",
     description: "",
   });
+
+  console.log(restaurants);
 
   const [query, setQuery] = useState("");
 
@@ -27,28 +32,21 @@ export default function CreatePost() {
 
   return (
     <div>
-      <Combobox
-        value={postData.restaurant}
-        onChange={(restaurant) =>
-          setPostData({ ...postData, restaurant: restaurant })
-        }
-      >
+      <Combobox value={selectedRestaurant} onChange={setSelectedRestaurant}>
         <Combobox.Input
-          className="relative"
-          autoComplete="off"
-          onChange={(e) => setQuery(e.target.value)}
-          displayValue={(restaurant) => restaurant.name}
+          className="h-8 rounded-md bg-white text-black font-bold flex w-full justify-between items-center"
+          displayValue={(restaurant) => restaurant?.name}
+          onChange={(event) => setQuery(event.target.value)}
         />
-        <Combobox.Options className="overlay-panel fixed max-h-60">
-          {filteredRestaurants?.length ? (
-            filteredRestaurants?.map((restaurant) => (
-              <Combobox.Option key={restaurant.id} value={restaurant}>
-                {restaurant.name}
-              </Combobox.Option>
-            ))
-          ) : (
-            <span className="text-orange-1">No results found</span>
-          )}
+
+        <Combobox.Options className="overflow-y-scroll w-full absolute max-h-40 mt-8 bg-black border-2 border-teal-1">
+          {filteredRestaurants.length === 0
+            ? "No results found"
+            : filteredRestaurants?.map((restaurant) => (
+                <Combobox.Option key={restaurant.id} value={restaurant}>
+                  {restaurant.name}
+                </Combobox.Option>
+              ))}
         </Combobox.Options>
       </Combobox>
       <input
