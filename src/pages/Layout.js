@@ -4,7 +4,7 @@ import { logout } from "lib/api";
 import { useNavigate } from "react-router-dom";
 
 import { ReactComponent as FeedIcon } from "assets/feed.svg";
-import { ReactComponent as SearchIcon } from "assets/search.svg";
+import { ReactComponent as HouseIcon } from "assets/house.svg";
 import { ReactComponent as AccountIcon } from "assets/account.svg";
 import { ReactComponent as LogoutIcon } from "assets/logout.svg";
 import { ReactComponent as LoginIcon } from "assets/login.svg";
@@ -23,7 +23,7 @@ export default function Layout() {
           <LogoIcon />
         </div>
       </div>
-      <div className="flex justify-center grow overflow-y-scroll">
+      <div className="flex justify-center grow overflow-y-auto">
         <div className="max-w-lg w-full">
           <Outlet />
         </div>
@@ -31,7 +31,7 @@ export default function Layout() {
       <div className="flex justify-center">
         <div className="max-w-lg w-full grid grid-cols-4 divide-x-2 divide-teal-2 border-x-2 border-x-teal-2">
           <Link to={"/"} className="flex flex-col items-center justify-center">
-            <SearchIcon className="h-12 bg-teal-1 rounded-md p-1" />
+            <HouseIcon className="h-12 bg-teal-1 rounded-md p-1" />
             <span>Discover</span>
           </Link>
           <Link

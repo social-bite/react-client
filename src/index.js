@@ -7,7 +7,10 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   RouterProvider,
+  redirect,
 } from "react-router-dom";
+
+import pb from "lib/pocketbase";
 
 import Layout from "pages/Layout";
 import Discover from "pages/discover/Discover";
@@ -19,6 +22,16 @@ import EditProfile from "pages/account/EditProfile";
 import RequireAuth from "pages/RequireAuth";
 import NoAuth from "pages/NoAuth";
 import { fetchFeed, fetchRestaurantList, fetchUser } from "lib/api";
+
+const require_no_auth = async () => {
+  if(pb.authStore.isValid) return redirect("/")
+  return null;
+}
+
+const require_auth = async () => {
+  if(!pb.authStore.isValid) return redirect("/login")
+  return null;
+}
 
 const account_loader = async () => {
   let [userData, feedData] = await Promise.all([
@@ -45,7 +58,7 @@ const router = createBrowserRouter(
       </Route>
 
       {/* User is required to be logged in */}
-      <Route element={<RequireAuth />}>
+      <Route loader={require_auth}>
         <Route element={<Layout />}>
           <Route path="feed" loader={fetchFeed} element={<Feed />} />
           <Route path="account" loader={account_loader} element={<Account />} />
@@ -53,7 +66,7 @@ const router = createBrowserRouter(
         </Route>
       </Route>
       {/* User is required to be not logged in */}
-      <Route element={<NoAuth />}>
+      <Route loader={require_no_auth}>
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
       </Route>
