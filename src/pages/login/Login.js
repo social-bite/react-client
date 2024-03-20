@@ -27,14 +27,14 @@ export default function Login() {
       navigate("/feed");
     } catch (error) {
       console.error("Server error", error);
-      setErrorMessage("Server error");
+      setErrorMessage(`${error.response.message}`);
     }
   }
 
   return (
     <section className="h-screen w-screen flex flex-col justify-center items-center bg-black text-white">
       <Logo />
-      <div id="parent_notification">{errorMessage ? errorMessage : ""}</div>
+      <div id="parent_notification" className="mb-4">{errorMessage ? errorMessage : ""}</div>
       <form className="mb-4 w-1/2" onSubmit={(event) => handleSubmit(event)}>
         <div className="flex flex-col">
           <input
