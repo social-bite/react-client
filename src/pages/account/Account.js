@@ -1,9 +1,11 @@
 import React from "react";
 import { useLoaderData } from "react-router";
+import { useNavigate } from "react-router-dom";
 // import Logo from "assets/selfie.jpg";
 
 function Account() {
-  const {avatar, posts, username} = useLoaderData();
+  const navigate = useNavigate()
+  const { avatar, posts, firstname, lastname } = useLoaderData();
 
   return (
     <div>
@@ -16,13 +18,16 @@ function Account() {
           )}
         </div>
         <div>
-          { username }
+          <div className="mb-4">
+            { firstname + " " + lastname }
+          </div>
+          <button onClick={() => navigate('edit-profile')} className="btn-teal">Edit Profile</button>
         </div>
       </div>
       { posts ? (
           <div className="grid grid-cols-3 gap-4 pt-8">
             { posts.map((ele, index) => {
-              return (<img className="flex justify-center items-center" alt="post_img" key={index} src={ele["image"]}></img>)
+              return (<img className="flex justify-center items-center w-32 h-32 object-cover" alt="post_img" key={index} src={ele["image"]}></img>)
             })}
           </div>
         ) : (
