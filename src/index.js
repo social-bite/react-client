@@ -19,8 +19,6 @@ import Login from "pages/login/Login";
 import Register from "pages/register/Register";
 import Account from "pages/account/Account";
 import EditProfile from "pages/account/EditProfile";
-import RequireAuth from "pages/RequireAuth";
-import NoAuth from "pages/NoAuth";
 import { fetchFeed, fetchRestaurantList, fetchUser } from "lib/api";
 
 const require_no_auth = async () => {
