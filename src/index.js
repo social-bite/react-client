@@ -52,7 +52,7 @@ const router = createBrowserRouter(
     <>
       {/* User can either be logged in or not logged in */}
       <Route element={<Layout />}>
-        <Route path="/" loader={fetchRestaurantList} element={<Discover />} />
+        <Route path="/" element={<Discover />} />
       </Route>
 
       {/* User is required to be logged in */}

@@ -15,7 +15,6 @@ export default function Restaurant({
   let [isOpen, setIsOpen] = useState(false);
   const {
     data: menu,
-    error,
     isLoading,
   } = useSWR(isOpen ? `fetchMenu/${id}` : null, () => fetchRestaurantMenu(id));
 

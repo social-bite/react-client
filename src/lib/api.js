@@ -43,10 +43,23 @@ export const logout = () => {
   pb.authStore.clear();
 };
 
-export const fetchRestaurantList = async () => {
-  const records = await pb.collection("restaurants").getFullList();
-  return {restaurants: records};
+export const fetchRestaurantList = async ({ maxPrice = 0, medianPrice = 0 }) => {
+  let filterArray = [];
+  if(maxPrice > 0) {
+    filterArray.push(`max_price <= ${maxPrice}`);
+  }
+  if(medianPrice > 0) {
+    filterArray.push(`median_price <= ${medianPrice}`);
+  }
+  const filterString = filterArray.join(" AND ")
+
+  const records = await pb.collection("restaurants").getFullList({
+    filter: filterString
+  });
+  return records;
+
 };
+
 
 /**
  *
@@ -68,11 +81,11 @@ export const fetchRestaurantMenu = async (id) => {
 export const fetchFeed = async () => {
   const records = await pb.collection("posts").getFullList({ requestKey: null })
   // Set image to the actual image path.
-  for(const record of records){
+  for (const record of records) {
     record.image = pb.files.getUrl(record, record.image);
     console.log(record.image)
   }
-  return {posts: records}
+  return { posts: records }
 }
 
 /**
@@ -85,8 +98,8 @@ export const fetchFeed = async () => {
  * @param {string} [data.restaurant_name]
  * @param {string} [data.menu_item_name]
  */
-export const createPost = async ({restaurant_id, menu_item_id, description, price, restaurant_name, menu_item_name}) => {
-  const data={
+export const createPost = async ({ restaurant_id, menu_item_id, description, price, restaurant_name, menu_item_name }) => {
+  const data = {
     user_id: pb.authStore.model.id ?? '',
     restaurant_id: 'x779feov2qe4jjw' ?? '',
     menu_item_id: '2lebbedmqa3yg84' ?? '',
@@ -95,7 +108,6 @@ export const createPost = async ({restaurant_id, menu_item_id, description, pric
     restaurant_name: "Ate wendy's chicken blt woo" ?? '',
     menu_item_name: "" ?? '',
   };
-  // console.log(data);
   await pb.collection('posts').create(data)
 }
 
@@ -110,13 +122,3 @@ export const updateProfile = async (userData) => {
   const { id } = userData;
   await pb.collection('users').update(`${id}`, userData);
 }
-
-// export const fetchUserPosts = async () => {
-//   let newPosts = [...postData["posts"]]
-//   for (let i = 0; i < postData["posts"].length; ++i) {
-//     const { image } = postData["posts"][i]
-//     const url = pb.files.getUrl(postData["posts"][i], image);
-//     newPosts[i] = {...newPosts[i], image: url}
-//   }
-//   return {"posts": newPosts}
-// }
