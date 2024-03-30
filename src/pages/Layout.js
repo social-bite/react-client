@@ -17,7 +17,7 @@ export default function Layout() {
     navigate("/");
   }
   return (
-    <div className="h-screen w-screen flex flex-col bg-black text-white pt-2 pr-2 pl-2">
+    <div className="h-svh w-svw flex flex-col bg-black text-white pt-2 pr-2 pl-2">
       <div className="flex justify-center">
         <div className="max-w-lg w-full">
           <LogoIcon />
