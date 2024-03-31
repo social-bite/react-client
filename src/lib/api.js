@@ -79,11 +79,20 @@ export const fetchRestaurantMenu = async (id) => {
  */
 
 export const fetchFeed = async () => {
-  const records = await pb.collection("posts").getFullList({ requestKey: null })
+  const records = await pb.collection("posts").getFullList({
+     expand: "user,restaurant_id"
+  })
   // Set image to the actual image path.
   for (const record of records) {
     record.image = pb.files.getUrl(record, record.image);
-    console.log(record.image)
+    console.log(record);
+    if(record.expand){
+      record.username = record.expand.user.username;
+      if(record.expand.restaurant_id){
+        record.restaurant_name = record.expand.restaurant_id.name;
+      }
+    }
+    // record.username = record.expand.username.username;
   }
   return { posts: records }
 }
@@ -103,7 +112,7 @@ export const createPost = async ({ restaurant_id, menu_item_id, description, pri
     user_id: pb.authStore.model.id ?? '',
     restaurant_id: 'x779feov2qe4jjw' ?? '',
     menu_item_id: '2lebbedmqa3yg84' ?? '',
-    description: description ?? 'no description',
+    description: description,
     price: 0.00 ?? '',
     restaurant_name: "Ate wendy's chicken blt woo" ?? '',
     menu_item_name: "" ?? '',

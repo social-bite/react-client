@@ -65,8 +65,6 @@ export default function CreatePost() {
     description: "",
   });
 
-  console.log(restaurants);
-
   return (
     <div>
       <Combobox

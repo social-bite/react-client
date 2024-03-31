@@ -18,7 +18,7 @@ export default function Feed() {
             <CreatePost />
           </Tab.Panel>
           <Tab.Panel>
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-y-12">
               {posts.map((post, i) => (
                 <Post key={i} {...post} />
               ))}
