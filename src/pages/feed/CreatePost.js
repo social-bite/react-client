@@ -4,13 +4,13 @@ import { Combobox } from "@headlessui/react";
 import useSWR from "swr";
 import { fetchRestaurantList } from "lib/api";
 import { ReactComponent as ChevronUpDownIcon } from "assets/chevron-up-down.svg";
-
+import { useNavigate } from "react-router-dom";
 export default function CreatePost() {
+  const navigate = useNavigate();
   const { data, error, isLoading } = useSWR(
     "fetchRestaurantList",
     fetchRestaurantList
   );
-
 
   const [restaurants, setRestaurants] = useState([]);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
@@ -23,17 +23,23 @@ export default function CreatePost() {
   const [menuQuery, setMenuQuery] = useState("");
 
   const [description, setDescription] = useState("");
+  const [image, setImage] = useState();
+
+  const uploadImage = (e) => {
+    setImage(e.target.files[0]);
+  };
 
   const sendCreatePost = () => {
-    console.log(selectedRestaurant);
-    console.log(selectedMenuItem);
-    console.log(description);
     createPost({
       restaurant_id: selectedRestaurant.id,
       menu_item_id: selectedMenuItem.id,
       description: description,
-    })
-  }
+      image: image,
+    }).then(()=>{
+
+      navigate(0);
+    });
+  };
 
   useEffect(() => {
     if (!isLoading) {
@@ -75,7 +81,6 @@ export default function CreatePost() {
   useEffect(() => {
     setMenuQuery(selectedMenuItem?.name ?? "");
   }, [selectedMenuItem]);
-
 
   return (
     <div className="flex flex-col gap-y-2">
@@ -164,7 +169,13 @@ export default function CreatePost() {
         placeholder="Description"
         onChange={(e) => setDescription(e.target.value)}
       />
-      <button className="btn-orange" onClick={sendCreatePost}>
+      <input type="file" onChange={uploadImage} />
+
+      <button
+        disabled={!selectedRestaurant || !selectedMenuItem}
+        className="btn-orange"
+        onClick={sendCreatePost}
+      >
         Upload
       </button>
     </div>

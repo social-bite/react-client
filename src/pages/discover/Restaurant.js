@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { fetchRestaurantMenu } from "lib/api";
 import useSWR from "swr";
+import { Link } from "react-router-dom";
 
 export default function Restaurant({
   id,
@@ -22,12 +23,14 @@ export default function Restaurant({
     setIsOpen(true);
   };
 
+  const openTimeString = (new Date(open_time)).toUTCString("hh:mm:ss").substring(17,16+6);
+  const closeTimeString = (new Date(close_time)).toUTCString().substring(17,16+6);
   return (
     <div>
-      <p>{name}</p>
+      <Link to={`/restaurant/${id}`} className="hover:text-teal-1 hover:underline">{name}</Link>
       <p>{address ? address : "No address available"}</p>
       <p>
-        ${min_price} - ${max_price}
+        {openTimeString} - {closeTimeString}
       </p>
       {/* <div className="w-60 h-60 bg-white"></div> */}
       <button

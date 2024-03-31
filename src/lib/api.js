@@ -20,7 +20,13 @@ import pb from "./pocketbase";
  * @param {string} password
  * @param {string} passwordConfirm
  */
-export const register = async (first_name, last_name, username, password, passwordConfirm) => {
+export const register = async (
+  first_name,
+  last_name,
+  username,
+  password,
+  passwordConfirm
+) => {
   await pb.collection("users").create({
     firstame: first_name,
     lastname: last_name,
@@ -43,23 +49,24 @@ export const logout = () => {
   pb.authStore.clear();
 };
 
-export const fetchRestaurantList = async ({ maxPrice = 0, medianPrice = 0 }) => {
+export const fetchRestaurantList = async ({
+  maxPrice = 0,
+  medianPrice = 0,
+}) => {
   let filterArray = [];
-  if(maxPrice > 0) {
+  if (maxPrice > 0) {
     filterArray.push(`max_price <= ${maxPrice}`);
   }
-  if(medianPrice > 0) {
+  if (medianPrice > 0) {
     filterArray.push(`median_price <= ${medianPrice}`);
   }
-  const filterString = filterArray.join(" AND ")
+  const filterString = filterArray.join(" AND ");
 
   const records = await pb.collection("restaurants").getFullList({
-    filter: filterString
+    filter: filterString,
   });
   return records;
-
 };
-
 
 /**
  *
@@ -74,32 +81,32 @@ export const fetchRestaurantMenu = async (id) => {
 };
 
 /**
- * 
- * @returns 
+ *
+ * @returns
  */
 
 export const fetchFeed = async () => {
   const records = await pb.collection("posts").getFullList({
-     expand: "user,restaurant_id",
-     sort: '-created',
-  })
+    expand: "user,restaurant_id",
+    sort: "-created",
+  });
   // Set image to the actual image path.
   for (const record of records) {
     record.image = pb.files.getUrl(record, record.image);
-    if(record.expand){
+    if (record.expand) {
       record.username = record.expand.user.username;
-      if(record.expand.restaurant_id){
+      if (record.expand.restaurant_id) {
         record.restaurant_name = record.expand.restaurant_id.name;
       }
     }
     // record.username = record.expand.username.username;
   }
-  return { posts: records }
-}
+  return { posts: records };
+};
 
 /**
- * 
- * @param {Object} data 
+ *
+ * @param {Object} data
  * @param {string} [data.restaurant_id] - Id of the restaurant
  * @param {string} [data.menu_item_id] - Id of the item
  * @param {string} [data.description] - Post description
@@ -107,24 +114,52 @@ export const fetchFeed = async () => {
  * @param {string} [data.restaurant_name]
  * @param {string} [data.menu_item_name]
  */
-export const createPost = async ({ restaurant_id, menu_item_id, description}) => {
+export const createPost = async ({
+  restaurant_id,
+  menu_item_id,
+  description,
+  image,
+}) => {
   const data = {
-    user: pb.authStore.model.id ?? '',
-    restaurant_id: restaurant_id ?? '',
-    menu_item_id: menu_item_id ?? '',
+    user: pb.authStore.model.id ?? "",
+    restaurant_id: restaurant_id ?? "",
+    menu_item_id: menu_item_id ?? "",
     description: description,
+    image: image,
   };
-  await pb.collection('posts').create(data)
-}
+  return await pb.collection("posts").create(data);
+};
 
 export const fetchUser = async () => {
-  let userData = await pb.collection('users').getFullList({ requestKey: null });
+  let userData = await pb.collection("users").getFullList({ requestKey: null });
   const { avatar } = userData[0];
   const url = pb.files.getUrl(userData[0], avatar);
   return [userData[0], url];
-}
+};
 
 export const updateProfile = async (userData) => {
   const { id } = userData;
-  await pb.collection('users').update(`${id}`, userData);
-}
+  await pb.collection("users").update(`${id}`, userData);
+};
+
+export const fetchRestaurantFeed = async (restaurantData) => {
+  const { restaurant_id } = restaurantData;
+
+  const records = await pb.collection("posts").getFullList({
+    filter: `restaurant_id='${restaurant_id}'`,
+    expand: "user,restaurant_id",
+    sort: "-created",
+  });
+  // Set image to the actual image path.
+  for (const record of records) {
+    record.image = pb.files.getUrl(record, record.image);
+    if (record.expand) {
+      record.username = record.expand.user.username;
+      if (record.expand.restaurant_id) {
+        record.restaurant_name = record.expand.restaurant_id.name;
+      }
+    }
+  }
+
+  return records;
+};

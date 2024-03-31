@@ -20,6 +20,7 @@ import Register from "pages/register/Register";
 import Account from "pages/account/Account";
 import EditProfile from "pages/account/EditProfile";
 import { fetchFeed, fetchRestaurantList, fetchUser } from "lib/api";
+import Restaurant from "pages/restaurant/Restaurant";
 
 const require_no_auth = async () => {
   if(pb.authStore.isValid) return redirect("/")
@@ -53,6 +54,7 @@ const router = createBrowserRouter(
       {/* User can either be logged in or not logged in */}
       <Route element={<Layout />}>
         <Route path="/" element={<Discover />} />
+        <Route path="/restaurant/:id" element={<Restaurant />} />
       </Route>
 
       {/* User is required to be logged in */}
