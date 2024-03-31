@@ -18,7 +18,10 @@ export default function Post({
         </div>
       </div>
       <p>{description}</p>
-      <img className="rounded-md " src={image} alt="post" />
+      {image && (
+
+      <img className="rounded-md max-w-60" src={image} alt="post" />
+      )}
     </div>
   );
 }

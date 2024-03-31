@@ -80,12 +80,12 @@ export const fetchRestaurantMenu = async (id) => {
 
 export const fetchFeed = async () => {
   const records = await pb.collection("posts").getFullList({
-     expand: "user,restaurant_id"
+     expand: "user,restaurant_id",
+     sort: '-created',
   })
   // Set image to the actual image path.
   for (const record of records) {
     record.image = pb.files.getUrl(record, record.image);
-    console.log(record);
     if(record.expand){
       record.username = record.expand.user.username;
       if(record.expand.restaurant_id){
@@ -107,15 +107,12 @@ export const fetchFeed = async () => {
  * @param {string} [data.restaurant_name]
  * @param {string} [data.menu_item_name]
  */
-export const createPost = async ({ restaurant_id, menu_item_id, description, price, restaurant_name, menu_item_name }) => {
+export const createPost = async ({ restaurant_id, menu_item_id, description}) => {
   const data = {
-    user_id: pb.authStore.model.id ?? '',
-    restaurant_id: 'x779feov2qe4jjw' ?? '',
-    menu_item_id: '2lebbedmqa3yg84' ?? '',
+    user: pb.authStore.model.id ?? '',
+    restaurant_id: restaurant_id ?? '',
+    menu_item_id: menu_item_id ?? '',
     description: description,
-    price: 0.00 ?? '',
-    restaurant_name: "Ate wendy's chicken blt woo" ?? '',
-    menu_item_name: "" ?? '',
   };
   await pb.collection('posts').create(data)
 }

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Combobox } from "@headlessui/react";
 import useSWR from "swr";
 import { fetchRestaurantList } from "lib/api";
+import { ReactComponent as ChevronUpDownIcon } from "assets/chevron-up-down.svg";
 
 export default function CreatePost() {
   const { data, error, isLoading } = useSWR(
@@ -10,37 +11,52 @@ export default function CreatePost() {
     fetchRestaurantList
   );
 
+
   const [restaurants, setRestaurants] = useState([]);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [filteredRestaurants, setFilteredRestaurants] = useState(restaurants);
-  const [query, setQuery] = useState("");
+  const [restaurantQuery, setRestaurantQuery] = useState("");
 
   const [menu, setMenu] = useState([]);
   const [selectedMenuItem, setSelectedMenuItem] = useState(null);
   const [filteredMenu, setFilteredMenu] = useState(restaurants);
   const [menuQuery, setMenuQuery] = useState("");
 
+  const [description, setDescription] = useState("");
+
+  const sendCreatePost = () => {
+    console.log(selectedRestaurant);
+    console.log(selectedMenuItem);
+    console.log(description);
+    createPost({
+      restaurant_id: selectedRestaurant.id,
+      menu_item_id: selectedMenuItem.id,
+      description: description,
+    })
+  }
+
   useEffect(() => {
     if (!isLoading) {
-      setRestaurants(data.restaurants);
+      setRestaurants(data);
     }
   }, [isLoading]);
 
   useEffect(() => {
     setFilteredRestaurants(
-      query === ""
+      restaurantQuery === ""
         ? restaurants
         : restaurants?.filter((restaurant) => {
-            return restaurant.name.toLowerCase().includes(query.toLowerCase());
+            return restaurant.name
+              .toLowerCase()
+              .includes(restaurantQuery.toLowerCase());
           })
     );
-  }, [query]);
+  }, [restaurantQuery, restaurants]);
 
   useEffect(() => {
-    setQuery(selectedRestaurant?.name ?? "");
+    setRestaurantQuery(selectedRestaurant?.name ?? "");
     if (selectedRestaurant) {
       fetchRestaurantMenu(selectedRestaurant.id).then((response) => {
-        console.log(response);
         setMenu(response);
       });
     }
@@ -54,19 +70,16 @@ export default function CreatePost() {
             return item.name.toLowerCase().includes(menuQuery.toLowerCase());
           })
     );
-  }, [menuQuery]);
+  }, [menuQuery, menu]);
 
   useEffect(() => {
     setMenuQuery(selectedMenuItem?.name ?? "");
   }, [selectedMenuItem]);
 
-  const [postData, setPostData] = useState({
-    restaurant: "",
-    description: "",
-  });
 
   return (
-    <div>
+    <div className="flex flex-col gap-y-2">
+      <div className="font-bold underline">Restaurants</div>
       <Combobox
         as="div"
         className="relative"
@@ -74,17 +87,24 @@ export default function CreatePost() {
         onChange={setSelectedRestaurant}
       >
         <Combobox.Input
-          className="h-8 rounded-md bg-white text-black font-bold flex w-full justify-between items-center"
+          className="h-8 rounded-md bg-white text-black font-bold flex w-full justify-between items-center px-2"
           displayValue={(restaurant) => restaurant?.name}
-          onChange={(event) => setQuery(event.target.value)}
+          onChange={(event) => setRestaurantQuery(event.target.value)}
+          autoComplete="off"
         />
+        <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+          <ChevronUpDownIcon
+            className="h-5 w-5 text-gray-800"
+            aria-hidden="true"
+          />
+        </Combobox.Button>
 
         <Combobox.Options className="overflow-y-scroll flex flex-col w-full absolute max-h-40 bg-black border-2 border-teal-1 divide-y-2 z-50">
           {filteredRestaurants.length === 0
             ? "No results found"
             : filteredRestaurants?.map((restaurant) => (
                 <Combobox.Option
-                  className="gap-y-2"
+                  className="gap-y-2 hover:bg-gray-800 cursor-pointer"
                   key={restaurant.id}
                   value={restaurant}
                 >
@@ -95,48 +115,56 @@ export default function CreatePost() {
         </Combobox.Options>
       </Combobox>
       {selectedRestaurant && (
-        <Combobox
-          as="div"
-          className="relative"
-          value={selectedMenuItem}
-          onChange={setSelectedMenuItem}
-        >
-          <Combobox.Input
-            className="h-8 rounded-md bg-white text-black font-bold flex w-full justify-between items-center"
-            displayValue={(restaurant) => restaurant?.name}
-            onChange={(event) => setMenuQuery(event.target.value)}
-          />
+        <>
+          <div className="font-bold underline">Menu Item</div>
+          <Combobox
+            as="div"
+            className="relative"
+            value={selectedMenuItem}
+            onChange={setSelectedMenuItem}
+          >
+            <Combobox.Input
+              className="h-8 rounded-md bg-white text-black font-bold flex w-full justify-between items-center px-2"
+              displayValue={(restaurant) => restaurant?.name}
+              onChange={(event) => setMenuQuery(event.target.value)}
+              autoComplete="off"
+            />
+            <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+              <ChevronUpDownIcon
+                className="h-5 w-5 text-gray-800"
+                aria-hidden="true"
+              />
+            </Combobox.Button>
 
-          <Combobox.Options className="overflow-y-scroll flex flex-col w-full absolute max-h-40 bg-black border-2 border-teal-1 divide-y-2">
-            {filteredMenu.length === 0
-              ? "No results found"
-              : filteredMenu?.map((item) => (
-                  <Combobox.Option
-                    className="gap-y-2"
-                    key={item.id}
-                    value={item}
-                  >
-                    <div>
-                      ${item.price} - {item.name}
-                    </div>
-                  </Combobox.Option>
-                ))}
-          </Combobox.Options>
-        </Combobox>
+            <Combobox.Options className="overflow-y-scroll flex flex-col w-full absolute max-h-40 bg-black border-2 border-teal-1 divide-y-2">
+              {filteredMenu.length === 0
+                ? "No results found"
+                : filteredMenu?.map((item) => (
+                    <Combobox.Option
+                      className="gap-y-2 hover:bg-gray-800 cursor-pointer"
+                      key={item.id}
+                      value={item}
+                    >
+                      <div>
+                        ${item.price} - {item.name}
+                      </div>
+                    </Combobox.Option>
+                  ))}
+            </Combobox.Options>
+          </Combobox>
+        </>
       )}
-      <input
-        className="input-minimal"
+      <div className="font-bold underline">Description</div>
+
+      <textarea
+        className="px-2 py-1 text-black rounded-md"
         type="text"
         name="Description"
+        value={description}
         placeholder="Description"
-        onChange={(e) =>
-          setPostData({
-            ...postData,
-            description: e.target.value,
-          })
-        }
+        onChange={(e) => setDescription(e.target.value)}
       />
-      <button className="btn-orange" onClick={createPost}>
+      <button className="btn-orange" onClick={sendCreatePost}>
         Upload
       </button>
     </div>

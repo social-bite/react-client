@@ -23,7 +23,7 @@ export default function Layout() {
           <LogoIcon />
         </div>
       </div>
-      <div className="flex justify-center grow overflow-y-auto">
+      <div className="flex justify-center grow overflow-y-auto no-scrollbar">
         <div className="max-w-lg w-full">
           <Outlet />
         </div>
