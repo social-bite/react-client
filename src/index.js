@@ -58,7 +58,7 @@ const router = createBrowserRouter(
       {/* User is required to be logged in */}
       <Route loader={require_auth}>
         <Route element={<Layout />}>
-          <Route path="feed" loader={fetchFeed} element={<Feed />} />
+          <Route path="feed" loader={account_loader} element={<Feed />} />
           <Route path="account" loader={account_loader} element={<Account />} />
           <Route path="account/edit-profile" loader={edit_profile_loader} element={<EditProfile />} />
         </Route>

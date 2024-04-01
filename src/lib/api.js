@@ -70,7 +70,6 @@ export const fetchFeed = async () => {
   // Set image to the actual image path.
   for(const record of records){
     record.image = pb.files.getUrl(record, record.image);
-    console.log(record.image)
   }
   return {posts: records}
 }
@@ -101,6 +100,7 @@ export const createPost = async ({restaurant_id, menu_item_id, description, pric
 
 export const fetchUser = async () => {
   let userData = await pb.collection('users').getFullList({ requestKey: null });
+  console.log(userData)
   const { avatar } = userData[0];
   const url = pb.files.getUrl(userData[0], avatar);
   return [userData[0], url];
@@ -110,13 +110,3 @@ export const updateProfile = async (userData) => {
   const { id } = userData;
   await pb.collection('users').update(`${id}`, userData);
 }
-
-// export const fetchUserPosts = async () => {
-//   let newPosts = [...postData["posts"]]
-//   for (let i = 0; i < postData["posts"].length; ++i) {
-//     const { image } = postData["posts"][i]
-//     const url = pb.files.getUrl(postData["posts"][i], image);
-//     newPosts[i] = {...newPosts[i], image: url}
-//   }
-//   return {"posts": newPosts}
-// }

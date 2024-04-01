@@ -27,7 +27,7 @@ function Account() {
       { posts ? (
           <div className="grid grid-cols-3 gap-4 pt-8">
             { posts.map((ele, index) => {
-                if (ele["username"] === id) {
+                if (ele["user"] === id) {
                   return (<img className="flex justify-center items-center w-32 h-32 object-cover" alt="post_img" key={index} src={ele["image"]}></img>)
                 }
             })}
