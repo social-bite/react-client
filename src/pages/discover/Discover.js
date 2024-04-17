@@ -157,7 +157,7 @@ export default function Discover() {
         </Disclosure.Panel>
       </Disclosure>
 
-      <div className="flex flex-col gap-y-2 shrink overflow-y-scroll h-full">
+      <div className="flex flex-col gap-y-8 shrink overflow-y-scroll h-full">
         {filteredRestaurants?.map((restaurant) => {
           return <Restaurant key={restaurant.id} {...restaurant} />;
         })}

@@ -62,8 +62,9 @@ export const fetchRestaurantList = async ({
   }
   const filterString = filterArray.join(" AND ");
 
-  const records = await pb.collection("restaurants").getFullList({
+  const records = await pb.collection("restaurant_list").getFullList({
     filter: filterString,
+    sort: "-num_posts"
   });
   return records;
 };

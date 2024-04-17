@@ -14,7 +14,7 @@ export default function Restaurant() {
   console.log(posts);
 
   return (
-    <div className="flex flex-col gap-y-3 h-full relative">
+    <div className="flex flex-col gap-y-12 h-full relative">
       {isLoading ? "Loading" : 
       (posts.length === 0 ? 
         "There are no posts for this restaurant"

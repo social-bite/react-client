@@ -4,14 +4,17 @@ import { fetchRestaurantMenu } from "lib/api";
 import useSWR from "swr";
 import { Link } from "react-router-dom";
 
+import {ReactComponent as PostIcon} from "assets/post.svg";
+
 export default function Restaurant({
   id,
   name,
   address,
   close_time,
   open_time,
-  min_price,
-  max_price,
+  // min_price,
+  // max_price,
+  num_posts
 }) {
   let [isOpen, setIsOpen] = useState(false);
   const {
@@ -27,7 +30,14 @@ export default function Restaurant({
   const closeTimeString = (new Date(close_time)).toUTCString().substring(17,16+6);
   return (
     <div>
-      <Link to={`/restaurant/${id}`} className="hover:text-teal-1 hover:underline">{name}</Link>
+      <Link to={`/restaurant/${id}`} className="hover:text-teal-1 hover:underline flex flex-col gap-x-2">
+        <span className="text-lg">{name}</span>
+        <div className="flex">
+        {num_posts}
+        <PostIcon className="h-5 w-5" />
+        </div>
+        
+      </Link>
       <p>{address ? address : "No address available"}</p>
       <p>
         {openTimeString} - {closeTimeString}
